@@ -8,7 +8,7 @@ const photo = {
   osaMayor: "https://www.shishalux.es/images/IMG-20240715-WA0084.webp",
   osaMenor: "https://www.shishalux.es/images/IMG-20240707-WA0040.webp",
 };
-const booking = "https://www.covermanager.com/booking?source=shishalux";
+const booking = "https://www.covermanager.com/reservation/module_restaurant/SHISHA-LUX/spanish";
 type Msg = { role: "bot" | "user"; text: string };
 const welcome: Msg[] = [{role:"bot",text:"¡Bienvenido a Shisha Lux! ✨ Soy el asistente virtual de esta demostración. Puedo orientarte sobre espacios, salas VIP, horarios, ubicación y servicios. ¿Qué te gustaría saber?"}];
 function reply(q:string) {
