@@ -87,3 +87,6 @@
 .floating{left:24px;right:24px;bottom:24px;width:auto;max-width:300px;min-width:0;z-index:3}
 .floating b,.floating p{display:block;overflow-wrap:anywhere}
 @media(max-width:850px){.floating{left:18px;right:18px;max-width:320px}}
+
+.intro-gif img{display:block;width:min(260px,70vw);height:auto;margin:0 auto;object-fit:contain}
+.intro-gif p{margin-top:24px;letter-spacing:.32em;font-size:10px;color:#c7b88b}
