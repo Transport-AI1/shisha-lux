@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 const photo = {
   lounge: "https://www.shishalux.es/images/sala_lux.webp",
@@ -25,10 +25,13 @@ function reply(q:string) {
 }
 const hours = [["Lunes — Jueves","17:00 — 01:00"],["Viernes","17:00 — 02:30"],["Sábado","16:00 — 02:30"],["Domingo","16:00 — 01:00"]];
 export default function Home(){
+ const [intro,setIntro]=useState(true);
  const [drawer,setDrawer]=useState(false),[chat,setChat]=useState(false),[input,setInput]=useState(""),[busy,setBusy]=useState(false),[msgs,setMsgs]=useState<Msg[]>(welcome);
+ useEffect(()=>{const timer=window.setTimeout(()=>setIntro(false),2300);return()=>window.clearTimeout(timer)},[]);
  function send(e:FormEvent){e.preventDefault();const q=input.trim();if(!q||busy)return;setMsgs(m=>[...m,{role:"user",text:q}]);setInput("");setBusy(true);window.setTimeout(()=>{setMsgs(m=>[...m,{role:"bot",text:reply(q)}]);setBusy(false)},300)}
  const menu=[["La carta","carta","https://shishalux.es/carta.html"],["Bebidas & cócteles","carta","https://shishalux.es/carta.html"],["Reservas","reservas",booking],["Establecimiento","espacios","#espacios"],["Salas VIP","vip","#vip"],["Horarios","horarios","#horarios"],["Contacto","contacto","#contacto"]];
  return <main className="shell">
+ {intro&&<div className="intro-cover" role="status" aria-label="Bienvenido a Shisha Lux"><div className="intro-orbit orbit-one"/><div className="intro-orbit orbit-two"/><div className="intro-content"><span className="intro-kicker">RIVAS · MADRID</span><div className="intro-logo">SHISHA<span>LUX</span></div><div className="intro-rule"><i/></div><p>ENJOY THE LUX MOMENT</p></div><button className="intro-skip" onClick={()=>setIntro(false)}>ENTRAR <span>↗</span></button></div>}
  <header className="nav"><a className="brand" href="#">SHISHA<span>LUX</span></a><nav className="navlinks"><a href="#espacios">Espacios</a><a href="#vip">Salas VIP</a><a href="#experiencia">Experiencia</a><a href="#horarios">Horarios</a></nav><div className="navright"><button className="menu-trigger" onClick={()=>setDrawer(true)} aria-label="Abrir menú">☰</button><a className="navcta" href="https://wa.me/34660461926" target="_blank" rel="noreferrer">Contactar ↗</a></div></header>
  {drawer&&<><button className="drawer-shade" onClick={()=>setDrawer(false)} aria-label="Cerrar menú"/><aside className="drawer"><div className="drawer-top"><span className="brand">SHISHA<span>LUX</span></span><button onClick={()=>setDrawer(false)} className="close">×</button></div><p className="eyebrow">EXPLORA EL UNIVERSO LUX</p>{menu.map(([label,id,url])=><a key={label} href={url} onClick={()=>setDrawer(false)}>{label}<span>↗</span></a>)}<div className="drawer-bottom"><small>¿Necesitas ayuda?</small><a href="tel:+34660461926">+34 660 46 19 26</a><a href="mailto:hola@shishalux.es">hola@shishalux.es</a></div></aside></>}
  <section className="hero"><div><div className="eyebrow">RIVAS · LOUNGE · COCKTAILS · SHISHA</div><h1>El arte de<br/>vivir el <em>momento.</em></h1><p className="lead">Un lugar para desconectar, compartir y dejar que la noche encuentre su ritmo. Descubre los espacios, la carta y las experiencias de Shisha Lux.</p><div className="actions"><a className="btn" href="#espacios">Explorar el espacio ↘</a><button className="btn secondary" onClick={()=>setChat(true)}>Hablar con Lux ✦</button></div><div className="hero-meta"><span>RIVAS-VACIAMADRID</span><span>ENJOY THE LUX MOMENT</span></div></div><div className="heroart"><img src={photo.lounge} alt="Interior real de la Sala Lux"/><div className="floating"><b>YOUR NIGHT, YOUR LUX</b><p>Un ambiente propio. Un plan diferente.</p></div></div></section>
