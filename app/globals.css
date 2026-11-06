@@ -95,3 +95,59 @@
 /* Official Shisha Lux logo loader */
 .intro-brand-image .intro-logo-image{display:block;width:min(210px,54vw);height:auto;max-height:230px;object-fit:contain;margin:0 auto;filter:drop-shadow(0 0 12px #e8bd6570);animation:logoBreath 2.4s ease-in-out infinite}
 @keyframes logoBreath{0%,100%{transform:scale(.96);filter:drop-shadow(0 0 8px #e8bd6540)}50%{transform:scale(1.035);filter:drop-shadow(0 0 24px #e8bd65b0)}}
+
+
+/* Brand lockup, reviews, food photography and printable menu */
+.brand-image{display:flex;align-items:center;width:164px;height:58px;flex-shrink:0}
+.brand-image img{display:block;width:100%;height:100%;object-fit:contain;object-position:left center}
+.drawer-top .brand-image{width:145px;height:52px}
+.menu-brand-image{display:flex;align-items:center;width:130px;height:54px}
+.menu-brand-image img{width:100%;height:100%;object-fit:contain;object-position:left center}
+.menu-nav{gap:16px}
+.menu-download{border:1px solid #d96bc7;background:#27152b;color:#fff;border-radius:99px;padding:11px 16px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.menu-download:hover{background:#6c2c62}
+.menu-item-photo{display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:center}
+.menu-food-photo{width:132px;height:112px;object-fit:cover;border-radius:8px;background:#1a1b23}
+.menu-item-details{min-width:0}
+.reviews-wrap{width:100%}
+.reviews-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;margin-bottom:36px}
+.reviews-heading h2{font:800 clamp(34px,4vw,52px)/1.08 Manrope;letter-spacing:-.045em;margin:12px 0}
+.reviews-heading p{color:var(--muted);font-size:14px;line-height:1.7}
+.reviews-score{min-width:170px;display:grid;gap:5px;text-align:right}
+.reviews-score strong{font:800 52px Manrope;line-height:1}
+.review-stars{color:#efb75b;letter-spacing:.12em;font-size:17px}
+.reviews-score small,.review-card small,.review-privacy{color:#9996a4;font-size:11px}
+.reviews-layout{display:grid;grid-template-columns:minmax(280px,.85fr) 1.15fr;gap:30px;align-items:start}
+.review-form{background:#141620;border:1px solid var(--line);padding:25px;display:grid;gap:15px}
+.review-form h3{font:700 20px Manrope;margin:0 0 4px}
+.review-form label{display:grid;gap:8px;color:#d9d6e1;font-size:12px}
+.review-form input,.review-form textarea{width:100%;background:#0d0f16;border:1px solid #ffffff24;border-radius:6px;padding:12px;color:white;font:inherit;resize:vertical}
+.review-form input:focus,.review-form textarea:focus{outline:1px solid #e66acb}
+.rating-picker{display:flex;gap:8px}
+.rating-picker button{border:0;background:transparent;color:#55515f;font-size:28px;padding:0 3px;cursor:pointer}
+.rating-picker button.active{color:#efb75b}
+.review-form .btn{justify-self:start}
+.review-form .btn:disabled{opacity:.6;cursor:wait}
+.review-message{margin:0;color:#8fe3d1;font-size:12px}
+.review-privacy{line-height:1.5}
+.review-list{display:grid;gap:12px}
+.review-card{padding:20px 22px;border:1px solid var(--line);background:#10121a}
+.review-card-top{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.review-card-top b{font:700 14px Manrope}
+.review-card p{color:#c6c3ce;font-size:13px;line-height:1.65;margin:12px 0}
+.review-empty{color:#aaa7b5;padding:30px;border:1px dashed #ffffff25;font-size:13px;line-height:1.6}
+.menu-print-all{display:none}
+@media(max-width:760px){.brand-image{width:125px;height:48px}.reviews-heading{align-items:flex-start;flex-direction:column}.reviews-score{text-align:left}.reviews-layout{grid-template-columns:1fr}.menu-item-photo{grid-template-columns:100px 1fr;gap:13px}.menu-food-photo{width:100px;height:95px}.menu-download{padding:9px 10px;font-size:10px}.menu-brand-image{width:95px;height:45px}}
+@media print{
+ @page{size:A4;margin:14mm}
+ body,.menu-page{background:#fff!important;color:#171717!important}
+ .menu-nav,.menu-hero,.menu-sidebar,.menu-content-head,.menu-mobile-cats,.menu-items,.menu-disclaimer,.menu-footer,.menu-book,.menu-back,.menu-download{display:none!important}
+ .menu-layout{display:block!important;padding:0!important;margin:0!important}
+ .menu-content{display:block!important}
+ .menu-print-all{display:block!important;columns:2;column-gap:24px}
+ .print-category{break-inside:avoid;margin:0 0 18px}
+ .print-category h2{font:700 15px Arial;border-bottom:1px solid #aaa;padding-bottom:6px;margin:0 0 8px}
+ .print-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dotted #ccc;padding:5px 0;font:10px Arial;break-inside:avoid}
+ .print-item small{display:block;color:#555;font-size:8px;margin-top:2px;max-width:245px}
+ .print-item strong{white-space:nowrap}
+}
