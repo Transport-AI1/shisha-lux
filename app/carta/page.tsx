@@ -1,9 +1,8 @@
 "use client";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 
 type Item = { name: string; price?: string; detail?: string; tag?: string };
-type RatingSummary = { item_name: string; category_name: string; average_rating: number; review_count: number };
 type Section = { id: string; icon: string; name: string; intro?: string; items: Item[] };
 const sections: Section[] = [
  {id:"cachimbas",icon:"💨",name:"Cachimbas",intro:"Elige entre nuestras gamas de sabores. Consulta disponibilidad de sabores en el local.",items:[
@@ -69,36 +68,7 @@ const sections: Section[] = [
 ];
 export default function CartaPage(){
  const [active,setActive]=useState("cachimbas"); const [query,setQuery]=useState("");
- const [ratings,setRatings]=useState<RatingSummary[]>([]);
- const [reviewTarget,setReviewTarget]=useState("");
- const [reviewerName,setReviewerName]=useState("");
- const [reviewComment,setReviewComment]=useState("");
- const [reviewRating,setReviewRating]=useState("5");
- const [reviewMessage,setReviewMessage]=useState("");
- const [reviewBusy,setReviewBusy]=useState(false);
- useEffect(()=>{
-  let alive=true;
-  fetch("/api/reviews",{cache:"no-store"})
-   .then(r=>{if(!r.ok)throw new Error("No se pudieron cargar las valoraciones");return r.json();})
-   .then(data=>{if(alive)setRatings(data.ratings??[]);})
-   .catch(error=>console.error(error));
-  return()=>{alive=false;};
- },[]);
  const current=sections.find(s=>s.id===active)??sections[0];
- async function submitReview(e:FormEvent<HTMLFormElement>,itemName:string,categoryName:string){
-  e.preventDefault();
-  if(reviewBusy)return;
-  setReviewBusy(true);setReviewMessage("");
-  try{
-   const response=await fetch("/api/reviews",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({itemName,categoryName,reviewerName,comment:reviewComment,rating:Number(reviewRating)})});
-   const data=await response.json();
-   if(!response.ok)throw new Error(data.error??"No se pudo enviar la valoración.");
-   setReviewMessage(data.message??"¡Gracias! Tu valoración está pendiente de revisión.");
-   setReviewerName("");setReviewComment("");setReviewRating("5");setReviewTarget("");
-  }catch(error){
-   setReviewMessage(error instanceof Error?error.message:"No se pudo enviar la valoración.");
-  }finally{setReviewBusy(false);}
- }
  const filtered=useMemo(()=>current.items.filter(i=>(i.name+" "+(i.detail??"")+" "+(i.tag??"")).toLowerCase().includes(query.toLowerCase())),[current,query]);
  return <main className="menu-page">
   <header className="menu-nav"><Link href="/" className="menu-brand">SHISHA<span>LUX</span></Link><Link href="/" className="menu-back">← Volver a la web</Link><a className="menu-book" href="https://www.covermanager.com/reservation/module_restaurant/SHISHA-LUX/spanish" target="_blank" rel="noreferrer">Reservar mesa ↗</a></header>
@@ -106,15 +76,7 @@ export default function CartaPage(){
   <div className="menu-layout"><aside className="menu-sidebar"><span className="menu-side-title">EXPLORA</span>{sections.map(s=><button key={s.id} className={active===s.id?"selected":""} onClick={()=>{setActive(s.id);setQuery("");}}><span>{s.icon}</span>{s.name}<i>↗</i></button>)}</aside>
    <section className="menu-content"><div className="menu-content-head"><div><span className="menu-kicker">SHISHA LUX · MENÚ</span><h2>{current.icon} {current.name}</h2>{current.intro&&<p>{current.intro}</p>}</div><label className="menu-search"><span>⌕</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar en esta categoría…"/></label></div>
     <div className="menu-mobile-cats">{sections.map(s=><button key={s.id} className={active===s.id?"selected":""} onClick={()=>{setActive(s.id);setQuery("");}}>{s.icon} {s.name}</button>)}</div>
-    <div className="menu-items">{filtered.map((item,i)=>{
-     const summary=ratings.find(r=>r.item_name===item.name&&r.category_name===current.name);
-     const target=`${current.id}:${item.name}`;
-     return <article className="menu-item" key={item.name}><div className="menu-item-top"><h3>{item.name}</h3>{item.price&&<strong>{item.price}</strong>}</div>{item.detail&&<p>{item.detail}</p>}{item.tag&&<span className="menu-tag">{item.tag}</span>}
-      <div className="menu-rating-row"><span>{summary?`★ ${Number(summary.average_rating).toFixed(1)} · ${summary.review_count} ${summary.review_count===1?"valoración":"valoraciones"}`:"Aún sin valoraciones"}</span><button type="button" onClick={()=>{setReviewTarget(reviewTarget===target?"":target);setReviewMessage("");}}>Valorar</button></div>
-      {reviewTarget===target&&<form className="menu-review-form" onSubmit={e=>submitReview(e,item.name,current.name)}><input aria-label="Tu nombre" value={reviewerName} onChange={e=>setReviewerName(e.target.value)} placeholder="Tu nombre" maxLength={80} required/><select aria-label="Puntuación" value={reviewRating} onChange={e=>setReviewRating(e.target.value)}><option value="5">★★★★★ · Excelente</option><option value="4">★★★★☆ · Muy bien</option><option value="3">★★★☆☆ · Bien</option><option value="2">★★☆☆☆ · Mejorable</option><option value="1">★☆☆☆☆ · Mala</option></select><textarea aria-label="Comentario opcional" value={reviewComment} onChange={e=>setReviewComment(e.target.value)} placeholder="Cuéntanos tu experiencia (opcional)" maxLength={600} rows={3}/><button type="submit" disabled={reviewBusy}>{reviewBusy?"Enviando…":"Enviar valoración"}</button></form>}
-     </article>;
-    })}</div>
-    {reviewMessage&&<p className="menu-review-status" role="status">{reviewMessage}</p>}
+    <div className="menu-items">{filtered.map((item,i)=><article className="menu-item" key={item.name}><div className="menu-item-top"><h3>{item.name}</h3>{item.price&&<strong>{item.price}</strong>}</div>{item.detail&&<p>{item.detail}</p>}{item.tag&&<span className="menu-tag">{item.tag}</span>}</article>)}</div>
     {filtered.length===0&&<p className="menu-empty">No hay resultados en esta categoría.</p>}
     <div className="menu-disclaimer">Los precios, productos y sabores pueden cambiar. Algunos artículos pueden no estar disponibles. Confirma cualquier detalle con el equipo de Shisha Lux.</div>
    </section>
