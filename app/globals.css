@@ -95,14 +95,3 @@
 /* Official Shisha Lux logo loader */
 .intro-brand-image .intro-logo-image{display:block;width:min(210px,54vw);height:auto;max-height:230px;object-fit:contain;margin:0 auto;filter:drop-shadow(0 0 12px #e8bd6570);animation:logoBreath 2.4s ease-in-out infinite}
 @keyframes logoBreath{0%,100%{transform:scale(.96);filter:drop-shadow(0 0 8px #e8bd6540)}50%{transform:scale(1.035);filter:drop-shadow(0 0 24px #e8bd65b0)}}
-
-
-/* Menu ratings connected to Neon */
-.menu-rating-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid #ffffff12;color:#aaa6b5;font-size:11px}
-.menu-rating-row button,.menu-review-form button{border:1px solid #ed70d077;background:#54204e66;color:#ffeafa;border-radius:7px;padding:8px 12px;font-size:11px;font-weight:700;cursor:pointer}
-.menu-rating-row button:hover,.menu-review-form button:hover{background:#713067}
-.menu-review-form{display:grid;gap:8px;margin-top:12px;padding:13px;background:#ffffff08;border:1px solid #ffffff16;border-radius:9px}
-.menu-review-form input,.menu-review-form select,.menu-review-form textarea{width:100%;min-width:0;background:#0e1018;border:1px solid #ffffff20;border-radius:6px;padding:10px;color:#f8f5fb;font:12px 'DM Sans',sans-serif;outline:none}
-.menu-review-form textarea{resize:vertical}
-.menu-review-form button:disabled{opacity:.55;cursor:wait}
-.menu-review-status{padding:13px 15px;margin:18px 0;border:1px solid #75e4e855;border-radius:8px;background:#10282b;color:#c9fbf5;font-size:12px;line-height:1.6}
