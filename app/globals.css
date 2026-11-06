@@ -151,3 +151,5 @@
  .print-item small{display:block;color:#555;font-size:8px;margin-top:2px;max-width:245px}
  .print-item strong{white-space:nowrap}
 }
+
+.menu-item-rating{display:flex;align-items:center;gap:9px;margin-top:7px}.menu-rating-stars{display:inline-flex;gap:1px}.menu-rating-stars button{padding:0;border:0;background:transparent;color:#efb75b;font-size:15px;line-height:1;cursor:pointer}.menu-rating-stars button:disabled{opacity:.45;cursor:wait}.menu-rating-count{font-size:10px;color:#aaa6b5;font-variant-numeric:tabular-nums}.menu-item-rating:has(.menu-rating-count){min-height:17px}
