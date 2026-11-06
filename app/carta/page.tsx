@@ -69,16 +69,24 @@ const sections: Section[] = [
 export default function CartaPage(){
  const [active,setActive]=useState("cachimbas"); const [query,setQuery]=useState("");
  const current=sections.find(s=>s.id===active)??sections[0];
+ const foodPhotos = [
+  "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=85",
+  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=900&q=85"
+ ];
  const filtered=useMemo(()=>current.items.filter(i=>(i.name+" "+(i.detail??"")+" "+(i.tag??"")).toLowerCase().includes(query.toLowerCase())),[current,query]);
  return <main className="menu-page">
-  <header className="menu-nav"><Link href="/" className="menu-brand">SHISHA<span>LUX</span></Link><Link href="/" className="menu-back">← Volver a la web</Link><a className="menu-book" href="https://www.covermanager.com/reservation/module_restaurant/SHISHA-LUX/spanish" target="_blank" rel="noreferrer">Reservar mesa ↗</a></header>
+  <header className="menu-nav"><Link href="/" className="menu-brand menu-brand-image"><img src="https://shishalux.es/images/logo_transparente.webp" alt="Shisha Lux" /></Link><Link href="/" className="menu-back">← Volver a la web</Link><button className="menu-download" onClick={()=>window.print()}>↓ Descargar carta PDF</button><a className="menu-book" href="https://www.covermanager.com/reservation/module_restaurant/SHISHA-LUX/spanish" target="_blank" rel="noreferrer">Reservar mesa ↗</a></header>
   <section className="menu-hero"><span className="menu-kicker">RIVAS · MADRID · ENJOY THE LUX MOMENT</span><h1>La carta<span>.</span></h1><p>Sabores, cócteles y pequeños grandes momentos.</p><div className="menu-rule"/></section>
   <div className="menu-layout"><aside className="menu-sidebar"><span className="menu-side-title">EXPLORA</span>{sections.map(s=><button key={s.id} className={active===s.id?"selected":""} onClick={()=>{setActive(s.id);setQuery("");}}><span>{s.icon}</span>{s.name}<i>↗</i></button>)}</aside>
    <section className="menu-content"><div className="menu-content-head"><div><span className="menu-kicker">SHISHA LUX · MENÚ</span><h2>{current.icon} {current.name}</h2>{current.intro&&<p>{current.intro}</p>}</div><label className="menu-search"><span>⌕</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar en esta categoría…"/></label></div>
     <div className="menu-mobile-cats">{sections.map(s=><button key={s.id} className={active===s.id?"selected":""} onClick={()=>{setActive(s.id);setQuery("");}}>{s.icon} {s.name}</button>)}</div>
-    <div className="menu-items">{filtered.map((item,i)=><article className="menu-item" key={item.name}><div className="menu-item-top"><h3>{item.name}</h3>{item.price&&<strong>{item.price}</strong>}</div>{item.detail&&<p>{item.detail}</p>}{item.tag&&<span className="menu-tag">{item.tag}</span>}</article>)}</div>
+    <div className="menu-items">{filtered.map((item,i)=><article className={"menu-item "+(["food","hamburguesas","meriendas"].includes(current.id)?"menu-item-photo":"")} key={item.name}>{["food","hamburguesas","meriendas"].includes(current.id)&&<img className="menu-food-photo" src={foodPhotos[i%foodPhotos.length]} alt={item.name} loading="lazy"/>}<div className="menu-item-details"><div className="menu-item-top"><h3>{item.name}</h3>{item.price&&<strong>{item.price}</strong>}</div>{item.detail&&<p>{item.detail}</p>}{item.tag&&<span className="menu-tag">{item.tag}</span>}</div></article>)}</div>
     {filtered.length===0&&<p className="menu-empty">No hay resultados en esta categoría.</p>}
     <div className="menu-disclaimer">Los precios, productos y sabores pueden cambiar. Algunos artículos pueden no estar disponibles. Confirma cualquier detalle con el equipo de Shisha Lux.</div>
+    <div className="menu-print-all">{sections.map(section=><section className="print-category" key={section.id}><h2>{section.icon} {section.name}</h2>{section.items.map(item=><div className="print-item" key={item.name}><div><b>{item.name}</b>{item.detail&&<small>{item.detail}</small>}</div><strong>{item.price||"Consultar"}</strong></div>)}</section>)}</div>
    </section>
   </div>
   <footer className="menu-footer"><div><b>SHISHA<span>LUX</span></b><p>Enjoy the Lux Moment.</p></div><div><p>Av. Aurelio Álvarez, 7 · Rivas-Vaciamadrid</p><a href="https://wa.me/34660461926" target="_blank" rel="noreferrer">Consultar por WhatsApp ↗</a></div></footer>
