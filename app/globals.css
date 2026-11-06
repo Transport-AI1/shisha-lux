@@ -153,3 +153,5 @@
 }
 
 .menu-item-rating{display:flex;align-items:center;gap:9px;margin-top:7px}.menu-rating-stars{display:inline-flex;gap:1px}.menu-rating-stars button{padding:0;border:0;background:transparent;color:#efb75b;font-size:15px;line-height:1;cursor:pointer}.menu-rating-stars button.rated{color:#efb75b}.menu-rating-stars button:not(.rated){color:#514d59}.menu-rating-stars button:disabled{opacity:.45;cursor:wait}.menu-rating-count{font-size:10px;color:#aaa6b5;font-variant-numeric:tabular-nums}.menu-item-rating:has(.menu-rating-count){min-height:17px}
+
+.menu-rating-account{margin-top:22px;padding:14px 16px;border:1px solid #ffffff20;background:#ffffff08;border-radius:8px;color:#c9c4d1;font-size:11px;line-height:1.6}.menu-rating-account a{display:inline-block;margin-left:8px;color:#f39bdc;font-weight:700}.menu-rating-account span{display:block;margin-top:6px;color:#8fe3d1}.menu-rating-status{font-size:9px;color:#8fe3d1;margin-left:5px;white-space:nowrap}.menu-rating-stars button:disabled{opacity:.7;cursor:not-allowed}
