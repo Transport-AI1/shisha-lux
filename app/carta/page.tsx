@@ -114,6 +114,7 @@ export default function CartaPage(){
       {reviewTarget===target&&<form className="menu-review-form" onSubmit={e=>submitReview(e,item.name,current.name)}><input aria-label="Tu nombre" value={reviewerName} onChange={e=>setReviewerName(e.target.value)} placeholder="Tu nombre" maxLength={80} required/><select aria-label="Puntuación" value={reviewRating} onChange={e=>setReviewRating(e.target.value)}><option value="5">★★★★★ · Excelente</option><option value="4">★★★★☆ · Muy bien</option><option value="3">★★★☆☆ · Bien</option><option value="2">★★☆☆☆ · Mejorable</option><option value="1">★☆☆☆☆ · Mala</option></select><textarea aria-label="Comentario opcional" value={reviewComment} onChange={e=>setReviewComment(e.target.value)} placeholder="Cuéntanos tu experiencia (opcional)" maxLength={600} rows={3}/><button type="submit" disabled={reviewBusy}>{reviewBusy?"Enviando…":"Enviar valoración"}</button></form>}
      </article>;
     })}</div>
+    {reviewMessage&&<p className="menu-review-status" role="status">{reviewMessage}</p>}
     {filtered.length===0&&<p className="menu-empty">No hay resultados en esta categoría.</p>}
     <div className="menu-disclaimer">Los precios, productos y sabores pueden cambiar. Algunos artículos pueden no estar disponibles. Confirma cualquier detalle con el equipo de Shisha Lux.</div>
    </section>
