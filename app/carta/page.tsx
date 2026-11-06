@@ -1,9 +1,10 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 type Item = { name: string; price?: string; detail?: string; tag?: string };
 type Section = { id: string; icon: string; name: string; intro?: string; items: Item[] };
+type ItemRating = { average: number; count: number };
 const sections: Section[] = [
  {id:"cachimbas",icon:"💨",name:"Cachimbas",intro:"Elige entre nuestras gamas de sabores. Consulta disponibilidad de sabores en el local.",items:[
   {name:"Meduse Seabloom",price:"20 €",detail:"Precio para todo tipo de tabaco. Consumo de bebida por persona obligatorio.",tag:"Especial"},
@@ -68,6 +69,10 @@ const sections: Section[] = [
 ];
 export default function CartaPage(){
  const [active,setActive]=useState("cachimbas"); const [query,setQuery]=useState("");
+ const [ratings,setRatings]=useState<Record<string,ItemRating>>({});
+ const [sendingRating,setSendingRating]=useState<string|null>(null);
+ useEffect(()=>{fetch("/api/menu-ratings").then(r=>r.json()).then(d=>{if(d.ok)setRatings(d.ratings??{});}).catch(()=>{});},[]);
+ async function rateItem(category:string,name:string,rating:number){const key=`${category}:${name}`;setSendingRating(key);try{const response=await fetch("/api/menu-ratings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category,item:name,rating})});const data=await response.json();if(data.ok)setRatings(old=>({...old,[key]:data.rating}));}catch{}finally{setSendingRating(null);}}
  const current=sections.find(s=>s.id===active)??sections[0];
  const burgerPhotos = [
   "https://uploads.etersystem.es/uploads/601473067dd7285466040.32099615.jpeg",
@@ -81,7 +86,7 @@ export default function CartaPage(){
   <div className="menu-layout"><aside className="menu-sidebar"><span className="menu-side-title">EXPLORA</span>{sections.map(s=><button key={s.id} className={active===s.id?"selected":""} onClick={()=>{setActive(s.id);setQuery("");}}><span>{s.icon}</span>{s.name}<i>↗</i></button>)}</aside>
    <section className="menu-content"><div className="menu-content-head"><div><span className="menu-kicker">SHISHA LUX · MENÚ</span><h2>{current.icon} {current.name}</h2>{current.intro&&<p>{current.intro}</p>}</div><label className="menu-search"><span>⌕</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar en esta categoría…"/></label></div>
     <div className="menu-mobile-cats">{sections.map(s=><button key={s.id} className={active===s.id?"selected":""} onClick={()=>{setActive(s.id);setQuery("");}}>{s.icon} {s.name}</button>)}</div>
-    <div className="menu-items">{filtered.map((item,i)=><article className={"menu-item "+(current.id==="hamburguesas"?"menu-item-photo":"")} key={item.name}>{current.id==="hamburguesas"&&<img className="menu-food-photo" src={burgerPhotos[i%burgerPhotos.length]} alt={item.name+" de Shisha Lux"} loading="lazy"/>}<div className="menu-item-details"><div className="menu-item-top"><h3>{item.name}</h3>{item.price&&<strong>{item.price}</strong>}</div>{item.detail&&<p>{item.detail}</p>}{item.tag&&<span className="menu-tag">{item.tag}</span>}</div></article>)}</div>
+    <div className="menu-items">{filtered.map((item,i)=><article className={"menu-item "+(current.id==="hamburguesas"?"menu-item-photo":"")} key={item.name}>{current.id==="hamburguesas"&&<img className="menu-food-photo" src={burgerPhotos[i%burgerPhotos.length]} alt={item.name+" de Shisha Lux"} loading="lazy"/>}<div className="menu-item-details"><div className="menu-item-top"><h3>{item.name}</h3>{item.price&&<strong>{item.price}</strong>}</div><div className="menu-item-rating" aria-label={`Valorar ${item.name}`}><span className="menu-rating-stars">{[1,2,3,4,5].map(star=><button key={star} type="button" aria-label={`Dar ${star} estrellas a ${item.name}`} disabled={sendingRating===`${current.id}:${item.name}`} onClick={()=>rateItem(current.id,item.name,star)}>★</button>)}</span><span className="menu-rating-count">{ratings[`${current.id}:${item.name}`]?.average?.toFixed(1)??"0.0"} · {ratings[`${current.id}:${item.name}`]?.count??0}</span></div>{item.detail&&<p>{item.detail}</p>}{item.tag&&<span className="menu-tag">{item.tag}</span>}</div></article>)}</div>
     {filtered.length===0&&<p className="menu-empty">No hay resultados en esta categoría.</p>}
     <div className="menu-disclaimer">Los precios, productos y sabores pueden cambiar. Algunos artículos pueden no estar disponibles. Confirma cualquier detalle con el equipo de Shisha Lux.</div>
     <div className="menu-print-all">{sections.map(section=><section className="print-category" key={section.id}><h2>{section.icon} {section.name}</h2>{section.items.map(item=><div className="print-item" key={item.name}><div><b>{item.name}</b>{item.detail&&<small>{item.detail}</small>}</div><strong>{item.price||"Consultar"}</strong></div>)}</section>)}</div>
