@@ -41,7 +41,9 @@ function HookahProduct({variant}:{variant:number}){
 }
 
 export default function Home(){
- const [intro,setIntro]=useState(true);\n const [hookahIndex,setHookahIndex]=useState(0);\n useEffect(()=>{const id=window.setInterval(()=>setHookahIndex(i=>(i+1)%3),4600);return()=>window.clearInterval(id)},[]);
+ const [intro,setIntro]=useState(true);
+ const [hookahIndex,setHookahIndex]=useState(0);
+ useEffect(()=>{const id=window.setInterval(()=>setHookahIndex(i=>(i+1)%3),4600);return()=>window.clearInterval(id)},[]);
  const [drawer,setDrawer]=useState(false),[chat,setChat]=useState(false),[input,setInput]=useState(""),[busy,setBusy]=useState(false),[msgs,setMsgs]=useState<Msg[]>(welcome);
  useEffect(()=>{const timer=window.setTimeout(()=>setIntro(false),2300);return()=>window.clearTimeout(timer)},[]);
  function send(e:FormEvent){e.preventDefault();const q=input.trim();if(!q||busy)return;setMsgs(m=>[...m,{role:"user",text:q}]);setInput("");setBusy(true);window.setTimeout(()=>{setMsgs(m=>[...m,{role:"bot",text:reply(q)}]);setBusy(false)},300)}
