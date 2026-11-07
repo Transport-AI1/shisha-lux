@@ -214,3 +214,9 @@
 .hero.hookah-hero>div{animation:none}
 @media(max-width:850px){.hero.hookah-hero{padding:48px 20px 38px;gap:0;min-height:0}.hookah-intro h1{font-size:clamp(34px,6vw,48px)}.hookah-stage{height:330px}.carousel-product{width:34%;height:88%}.carousel-product.left{transform:translate(-132%,-50%) translateZ(-100px) scale(.66) rotateY(13deg)}.carousel-product.right{transform:translate(32%,-50%) translateZ(-70px) scale(.7) rotateY(-13deg)}}
 @media(max-width:560px){.hero.hookah-hero{padding:38px 10px 30px}.hookah-intro{padding:0 14px}.hookah-intro .eyebrow{font-size:8px;letter-spacing:.24em}.hookah-intro h1{font-size:35px;margin:12px 0 7px}.hookah-intro p{font-size:11px}.hookah-stage{height:270px;width:100%}.carousel-product{width:39%;height:84%}.carousel-product.left{transform:translate(-126%,-50%) translateZ(-100px) scale(.62) rotateY(13deg)}.carousel-product.right{transform:translate(26%,-50%) translateZ(-70px) scale(.65) rotateY(-13deg)}.hookah-bottomline{font-size:7px;letter-spacing:.12em;padding:10px 9px 0}.hookah-bottomline a{letter-spacing:.08em}}
+
+
+/* Blend the white photo backdrops into the dark hero stage */
+.hookah-stage{
+  background-color:#08090d;
+}
