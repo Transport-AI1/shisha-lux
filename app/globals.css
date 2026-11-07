@@ -173,3 +173,21 @@
 @media(max-width:850px){.hookah-product{inset:0 8% 3%}.hookah-svg{max-width:360px}.hookah-caption{top:16px;right:15px}.hookah-progress{bottom:14px;right:18px}}
 @media(max-width:560px){.heroart{overflow:hidden}.hookah-product{inset:3% 7% 5%}.hookah-svg{max-width:300px}.hookah-caption{top:13px;right:12px}.hookah-caption span{font-size:7px}.hookah-caption b{font-size:10px}.hookah-progress{width:64px;bottom:12px;right:13px}}
 @media(prefers-reduced-motion:reduce){.hookah-svg,.hookah-aura,.hookah-product{animation:none!important}}
+
+
+/* Real-photo hookah carousel: three products orbit through left, center and right */
+.hero.hookah-hero{display:block;max-width:1440px;min-height:650px;padding:28px 34px 54px}
+.hookah-stage{position:relative;width:100%;height:590px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 54%,#a64b9b30 0%,#43204418 34%,transparent 68%)}
+.hookah-stage:before{content:"";position:absolute;left:18%;right:18%;bottom:8%;height:1px;background:linear-gradient(90deg,transparent,#e9b6e255,transparent);filter:blur(1px)}
+.hookah-carousel{position:absolute;inset:0;perspective:1200px}
+.carousel-product{position:absolute;top:50%;left:50%;width:min(36%,390px);height:88%;display:grid;place-items:center;transition:transform 1.15s cubic-bezier(.2,.75,.2,1),opacity 1s ease,filter 1s ease;transform-style:preserve-3d;will-change:transform,opacity}
+.carousel-product img{display:block;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 28px 22px #0009) drop-shadow(0 0 22px #e8a3df22);user-select:none;-webkit-user-drag:none}
+.carousel-product.center{z-index:3;opacity:1;filter:none;transform:translate(-50%,-50%) translateZ(100px) scale(1.08)}
+.carousel-product.left{z-index:1;opacity:.58;filter:saturate(.75);transform:translate(-132%,-50%) translateZ(-100px) scale(.7) rotateY(13deg)}
+.carousel-product.right{z-index:2;opacity:.7;filter:saturate(.82);transform:translate(32%,-50%) translateZ(-70px) scale(.76) rotateY(-13deg)}
+.carousel-product.center img{animation:realHookahFloat 4.8s ease-in-out infinite}
+.carousel-product.left img,.carousel-product.right img{animation:realHookahFloat 5.4s ease-in-out infinite reverse}
+@keyframes realHookahFloat{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@media(max-width:850px){.hero.hookah-hero{padding:20px 18px 42px;min-height:540px}.hookah-stage{height:500px}.carousel-product{width:42%;height:82%}.carousel-product.left{transform:translate(-119%,-50%) translateZ(-100px) scale(.67) rotateY(13deg)}.carousel-product.right{transform:translate(19%,-50%) translateZ(-70px) scale(.72) rotateY(-13deg)}}
+@media(max-width:560px){.hero.hookah-hero{padding:12px 0 30px;min-height:410px}.hookah-stage{height:390px}.carousel-product{width:48%;height:78%}.carousel-product.left{transform:translate(-112%,-50%) translateZ(-100px) scale(.62) rotateY(13deg)}.carousel-product.right{transform:translate(12%,-50%) translateZ(-70px) scale(.66) rotateY(-13deg)}}
+@media(prefers-reduced-motion:reduce){.carousel-product,.carousel-product img{transition:none!important;animation:none!important}}
