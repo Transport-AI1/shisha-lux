@@ -155,3 +155,21 @@
 .menu-item-rating{display:flex;align-items:center;gap:9px;margin-top:7px}.menu-rating-stars{display:inline-flex;gap:1px}.menu-rating-stars button{padding:0;border:0;background:transparent;color:#efb75b;font-size:15px;line-height:1;cursor:pointer}.menu-rating-stars button.rated{color:#efb75b}.menu-rating-stars button:not(.rated){color:#514d59}.menu-rating-stars button:disabled{opacity:.45;cursor:wait}.menu-rating-count{font-size:10px;color:#aaa6b5;font-variant-numeric:tabular-nums}.menu-item-rating:has(.menu-rating-count){min-height:17px}
 
 .menu-rating-account{margin-top:22px;padding:14px 16px;border:1px solid #ffffff20;background:#ffffff08;border-radius:8px;color:#c9c4d1;font-size:11px;line-height:1.6}.menu-rating-account a{display:inline-block;margin-left:8px;color:#f39bdc;font-weight:700}.menu-rating-account span{display:block;margin-top:6px;color:#8fe3d1}.menu-rating-status{font-size:9px;color:#8fe3d1;margin-left:5px;white-space:nowrap}.menu-rating-stars button:disabled{opacity:.7;cursor:not-allowed}
+
+/* Floating hookah product carousel — transparent product render, no image card */
+.heroart{overflow:visible}
+.hookah-showcase{position:absolute;z-index:4;inset:0;display:grid;place-items:center;pointer-events:none;overflow:visible}
+.hookah-aura{position:absolute;width:min(76%,440px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#e8a3df2c 0%,#9e65b522 38%,transparent 70%);filter:blur(12px);animation:hookahAura 5s ease-in-out infinite}
+.hookah-product{position:absolute;inset:2% 10% 4%;display:grid;place-items:center;animation:hookahEnter 1s cubic-bezier(.18,.75,.22,1) both}
+.hookah-svg{height:100%;width:100%;max-width:410px;overflow:visible;filter:drop-shadow(0 25px 25px #0009) drop-shadow(0 0 22px #e8a3df25);animation:hookahFloat 4.6s ease-in-out infinite}
+.hookah-caption{position:absolute;z-index:2;right:18px;top:28px;display:grid;gap:6px;text-align:right;text-shadow:0 2px 12px #000}
+.hookah-caption span{font-size:8px;letter-spacing:.22em;color:#c4e9e8}
+.hookah-caption b{font:700 13px Manrope;letter-spacing:.16em;color:#fff}
+.hookah-progress{position:absolute;z-index:3;bottom:18px;right:24px;width:90px;height:2px;background:#ffffff55;overflow:hidden}
+.hookah-progress i{display:block;width:100%;height:100%;transform-origin:left;background:linear-gradient(90deg,#ed70d0,#9be9ec);transition:transform .45s ease}
+@keyframes hookahEnter{from{opacity:0;transform:translateY(34px) scale(.88) rotate(-7deg);filter:blur(8px)}to{opacity:1;transform:translateY(0) scale(1) rotate(0);filter:blur(0)}}
+@keyframes hookahFloat{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-12px) rotate(1.5deg)}}
+@keyframes hookahAura{0%,100%{transform:scale(.92);opacity:.55}50%{transform:scale(1.08);opacity:1}}
+@media(max-width:850px){.hookah-product{inset:0 8% 3%}.hookah-svg{max-width:360px}.hookah-caption{top:16px;right:15px}.hookah-progress{bottom:14px;right:18px}}
+@media(max-width:560px){.heroart{overflow:hidden}.hookah-product{inset:3% 7% 5%}.hookah-svg{max-width:300px}.hookah-caption{top:13px;right:12px}.hookah-caption span{font-size:7px}.hookah-caption b{font-size:10px}.hookah-progress{width:64px;bottom:12px;right:13px}}
+@media(prefers-reduced-motion:reduce){.hookah-svg,.hookah-aura,.hookah-product{animation:none!important}}
