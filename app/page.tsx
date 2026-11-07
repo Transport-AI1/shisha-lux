@@ -27,9 +27,9 @@ function reply(q:string) {
 const hours = [["Lunes — Jueves","17:00 — 01:00"],["Viernes","17:00 — 02:30"],["Sábado","16:00 — 02:30"],["Domingo","16:00 — 01:00"]];
 
 const hookahProducts = [
-  { name: "Meduse Sea Bloom", src: "https://www41.easy-myshop.jp/emsrsc/hookah-tokyo/itemimg/2/item.2.1.jpg" },
-  { name: "VyroLux", src: "https://myperfecthookah.com/cdn/shop/files/Hfceaba72e8d643df9c12312b16c604826.webp?v=1754930069" },
-  { name: "Oduman Infinity", src: "https://a.allegroimg.com/original/11a6f1/37c3e0594c1f9c826c1688fd35e7/Oduman-Infinity-Bronze-Hookah-Vodna-fajka-Shisha-Szisza-Black-Glass" },
+  { name: "Azure Gold", src: "https://toppng.com/public/uploads/preview/wraps-around-this-vase-enhancing-its-azure-blue-tint-hookah-11562955473jqynnu7mh0.png" },
+  { name: "Ruby Glass", src: "https://image.pngaaa.com/609/2540609-middle.png" },
+  { name: "Amber Classic", src: "https://toppng.com/public/uploads/preview/hookah-png-hookah-115628976599vbzw5ilzn.png" },
 ];
 
 function HookahCarousel({ active }: { active: number }) {
