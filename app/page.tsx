@@ -1,5 +1,6 @@
 "use client";
 import { FormEvent, useEffect, useState } from "react";
+import HookahShowcase from "./hookah-showcase";
 
 const photo = {
   lounge: "https://www.shishalux.es/images/sala_lux.webp",
@@ -24,8 +25,27 @@ function reply(q:string) {
  if(/hola|buenas|hey/.test(s)) return "¡Hola! ✨ ¿Te cuento algo sobre las salas VIP, las terrazas, la carta, los horarios o cómo llegar?";
  return "Puedo orientarte sobre la Sala Lux, las terrazas, las salas VIP Osa Mayor y Osa Menor, la carta, los horarios y la ubicación. Para confirmar disponibilidad o condiciones concretas, contacta con el equipo en el +34 660 46 19 26.\n\nLa gestión automática de reservas y las consultas conectadas a disponibilidad se incorporarán en una siguiente fase con Voiceflow.";
 }
+// Horario publicado: minutos desde las 00:00; valores superiores a 1440 cierran de madrugada.
+const schedule: Record<number, [number, number]> = {
+  0: [16 * 60, 25 * 60], 1: [17 * 60, 25 * 60], 2: [17 * 60, 25 * 60], 3: [17 * 60, 25 * 60],
+  4: [17 * 60, 25 * 60], 5: [17 * 60, 26.5 * 60], 6: [16 * 60, 26.5 * 60],
+};
+const hhmm = (m: number) => { const x = Math.round(m) % 1440; return String(Math.floor(x / 60)).padStart(2, "0") + ":" + String(x % 60).padStart(2, "0"); };
+function openStatus(now: Date = new Date()): { open: boolean; text: string } {
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Madrid", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(now);
+  const wd = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(parts.find((p) => p.type === "weekday")?.value ?? "");
+  const t = (Number(parts.find((p) => p.type === "hour")?.value) % 24) * 60 + Number(parts.find((p) => p.type === "minute")?.value);
+  if (wd < 0) return { open: false, text: "Consulta el horario" };
+  const today = schedule[wd], yest = schedule[(wd + 6) % 7];
+  if (yest[1] > 1440 && t < yest[1] - 1440) return { open: true, text: "Abierto ahora · cierra a las " + hhmm(yest[1]) };
+  if (t >= today[0]) return { open: true, text: "Abierto ahora · cierra a las " + hhmm(today[1]) };
+  return { open: false, text: "Cerrado · abre hoy a las " + hhmm(today[0]) };
+}
+
 const hours = [["Lunes — Jueves","17:00 — 01:00"],["Viernes","17:00 — 02:30"],["Sábado","16:00 — 02:30"],["Domingo","16:00 — 01:00"]];
 export default function Home(){
+ const [status,setStatus]=useState<{open:boolean;text:string}|null>(null);
+ useEffect(()=>{const update=()=>setStatus(openStatus());update();const timer=window.setInterval(update,60000);return()=>window.clearInterval(timer)},[]);
  const [intro,setIntro]=useState(true);
  const [drawer,setDrawer]=useState(false),[chat,setChat]=useState(false),[input,setInput]=useState(""),[busy,setBusy]=useState(false),[msgs,setMsgs]=useState<Msg[]>(welcome);
  useEffect(()=>{const timer=window.setTimeout(()=>setIntro(false),2300);return()=>window.clearTimeout(timer)},[]);
@@ -35,7 +55,28 @@ export default function Home(){
  {intro&&<div className="intro-cover" role="status" aria-label="Bienvenido a Shisha Lux"><div className="intro-orbit orbit-one"/><div className="intro-orbit orbit-two"/><div className="intro-content intro-brand-image"><span className="intro-kicker">RIVAS · MADRID</span><img className="intro-logo-image" src="https://shishalux.es/images/logo_transparente.webp" alt="Shisha Lux" /><div className="intro-rule"><i/></div><p>ENJOY THE LUX MOMENT</p></div><button className="intro-skip" onClick={()=>setIntro(false)}>ENTRAR <span>↗</span></button></div>}
  <header className="nav"><a className="brand brand-image" href="#" aria-label="Shisha Lux inicio"><img src="https://shishalux.es/images/logo_transparente.webp" alt="Shisha Lux" /></a><nav className="navlinks"><a href="#espacios">Espacios</a><a href="#vip">Salas VIP</a><a href="#experiencia">Experiencia</a><a href="#horarios">Horarios</a></nav><div className="navright"><button className="menu-trigger" onClick={()=>setDrawer(true)} aria-label="Abrir menú">☰</button><a className="navcta" href="https://wa.me/34660461926" target="_blank" rel="noreferrer">Contactar ↗</a></div></header>
  {drawer&&<><button className="drawer-shade" onClick={()=>setDrawer(false)} aria-label="Cerrar menú"/><aside className="drawer"><div className="drawer-top"><span className="brand brand-image"><img src="https://shishalux.es/images/logo_transparente.webp" alt="Shisha Lux" /></span><button onClick={()=>setDrawer(false)} className="close">×</button></div><p className="eyebrow">EXPLORA EL UNIVERSO LUX</p>{menu.map(([label,id,url])=><a key={label} href={url} onClick={()=>setDrawer(false)}>{label}<span>↗</span></a>)}<div className="drawer-bottom"><small>¿Necesitas ayuda?</small><a href="tel:+34660461926">+34 660 46 19 26</a><a href="mailto:hola@shishalux.es">hola@shishalux.es</a></div></aside></>}
- <section className="hero"><div><div className="eyebrow">RIVAS · LOUNGE · COCKTAILS · SHISHA</div><h1>El arte de<br/>vivir el <em>momento.</em></h1><p className="lead">Un lugar para desconectar, compartir y dejar que la noche encuentre su ritmo. Descubre los espacios, la carta y las experiencias de Shisha Lux.</p><div className="actions"><a className="btn" href={booking} target="_blank" rel="noreferrer">Reservar mesa ↗</a><a className="btn secondary" href="https://wa.me/34660461926" target="_blank" rel="noreferrer">Reservas VIP ↗</a><button className="btn ghost" onClick={()=>setChat(true)}>Hablar con Lux ✦</button></div><div className="hero-meta"><span>RIVAS-VACIAMADRID</span><span>ENJOY THE LUX MOMENT</span></div></div><div className="heroart"><img src={photo.garden} alt="Terraza Garden de Shisha Lux"/><div className="floating"><b>YOUR NIGHT, YOUR LUX</b><p>Un ambiente propio. Un plan diferente.</p></div></div></section>
+ <section className="lux-hero" id="inicio">
+  <div className="lux-hero-bg" style={{backgroundImage:`url(${photo.lounge})`}} aria-hidden="true"/>
+  <div className="lux-hero-inner">
+   <div className="lux-copy">
+    <div className="lux-badges">
+     <span className={"lux-badge"+(status?.open?" lux-open":"")}><i className="lux-dot"/>{status?status.text:"Rivas-Vaciamadrid"}</span>
+     <span className="lux-badge">Salas VIP privadas</span>
+    </div>
+    <div className="eyebrow">LOUNGE · SHISHA · COCKTAILS · RIVAS</div>
+    <h1>El arte de<br/>vivir el <em>momento.</em></h1>
+    <p className="lead">Cachimbas premium, cócteles de autor y espacios privados para compartir. Elige tu sala, tu terraza y deja que la noche encuentre su ritmo.</p>
+    <div className="actions"><a className="btn" href={booking} target="_blank" rel="noreferrer">Reservar mesa ↗</a><a className="btn secondary" href="https://wa.me/34660461926" target="_blank" rel="noreferrer">Reservas VIP ↗</a><button className="btn ghost" onClick={()=>setChat(true)}>Hablar con Lux ✦</button></div>
+    <ul className="lux-facts"><li><b>2</b><span>Salas VIP<br/>hasta 20 personas</span></li><li><b>5</b><span>Pantallas en<br/>Sala Lux</span></li><li><b>2</b><span>Terrazas<br/>Garden y Summer</span></li></ul>
+   </div>
+   <HookahShowcase/>
+  </div>
+  <div className="lux-strip">
+   <a href="#espacios" style={{backgroundImage:`url(${photo.lounge})`}}><small>01</small><b>Sala Lux</b><span>Lounge y deporte ↓</span></a>
+   <a href="#espacios" style={{backgroundImage:`url(${photo.garden})`}}><small>02</small><b>Terrazas</b><span>Garden y Summer ↓</span></a>
+   <a href="#vip" style={{backgroundImage:`url(${photo.osaMayor})`}}><small>03</small><b>Salas VIP</b><span>Osa Mayor y Osa Menor ↓</span></a>
+  </div>
+ </section>
  <section className="section" id="espacios"><div className="sectionhead"><div><div className="eyebrow">DESCUBRE NUESTROS ESPACIOS</div><h2>Un ambiente para<br/>cada plan.</h2></div><p>Una sala lounge para disfrutar del ambiente y el deporte, terrazas para relajarse y espacios privados para compartir en grupo.</p></div><div className="grid3"><article className="zone"><img src={photo.lounge} alt="Sala Lux"/><div className="zonecopy"><small>01 · LOUNGE</small><h3>Sala Lux</h3><p>Ambiente lounge con cinco pantallas de televisión. El punto de encuentro para disfrutar de los grandes partidos.</p></div></article><article className="zone"><img src={photo.garden} alt="Terraza Garden Heineken"/><div className="zonecopy"><small>02 · TERRAZA</small><h3>Garden Heineken</h3><p>Un rincón exterior de inspiración exótica para disfrutar de una tarde relajada.</p></div></article><article className="zone"><img src={photo.summer} alt="Terraza Summer"/><div className="zonecopy"><small>03 · TERRAZA</small><h3>Terraza Summer</h3><p>Un espacio abierto para compartir cócteles, batidos y refrescos.</p></div></article></div></section>
  <section className="section" id="vip"><div className="sectionhead"><div><div className="eyebrow">ESPACIOS PRIVADOS</div><h2>Vuestro grupo.<br/>Vuestra sala.</h2></div><p>Dos salas VIP con diferentes capacidades y opciones de entretenimiento. Consulta con el establecimiento las condiciones y disponibilidad.</p></div><div className="vipgrid"><article className="vip"><img src={photo.osaMayor} alt="Sala VIP Osa Mayor real"/><div className="zonecopy"><small>CAPACIDAD MÁXIMA · 20 PERSONAS</small><h3>Osa Mayor</h3><p>Una sala amplia para disfrutar en grupo.</p><div className="chips"><span className="chip">Billar</span><span className="chip">Dardos</span><span className="chip">PlayStation 5</span></div></div></article><article className="vip"><img src={photo.osaMenor} alt="Sala VIP Osa Menor real"/><div className="zonecopy"><small>CAPACIDAD MÁXIMA · 8 PERSONAS</small><h3>Osa Menor</h3><p>Un espacio privado para un plan más íntimo.</p><div className="chips"><span className="chip">Televisión</span><span className="chip">PlayStation 5</span><span className="chip">Futbolín</span></div></div></article></div><div className="reservation-note"><div><b>¿Estáis pensando en venir en grupo?</b><p>Para salas VIP o grupos de 9 personas o más, contactad directamente con Shisha Lux.</p></div><a className="btn" href="https://wa.me/34660461926" target="_blank" rel="noreferrer">Consultar por WhatsApp ↗</a></div></section>
  <section className="section" id="experiencia"><div className="experience"><img src={photo.osaMayor} alt="Sala VIP Osa Mayor de Shisha Lux"/><div><div className="eyebrow">EL UNIVERSO LUX</div><h2>Una experiencia<br/>a vuestro ritmo.</h2><p className="lead">Cachimbas, cócteles, batidos y una propuesta gastronómica para acompañar cada encuentro.</p><div className="featurelist"><div className="feature"><b>01 / Cachimbas</b><p>Distintas gamas y sabores recogidos en la carta online.</p></div><div className="feature"><b>02 / Cócteles</b><p>Creaciones de la casa y clásicos, también con opciones sin alcohol.</p></div><div className="feature"><b>03 / Gastronomía</b><p>Comida, hamburguesas y opciones para compartir.</p></div><div className="feature"><b>04 / Bebidas</b><p>Milkshakes, mojitos, cafés y una amplia selección.</p></div></div><a className="text-link" href="/carta">Descubrir la carta completa ↗</a></div></div></section>
