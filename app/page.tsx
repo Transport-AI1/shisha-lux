@@ -41,8 +41,11 @@ function openStatus(now: Date = new Date()): { open: boolean; text: string } {
   if (t >= today[0]) return { open: true, text: "Abierto ahora · cierra a las " + hhmm(today[1]) };
   return { open: false, text: "Cerrado · abre hoy a las " + hhmm(today[0]) };
 }
-\nconst hours = [["Lunes — Jueves","17:00 — 01:00"],["Viernes","17:00 — 02:30"],["Sábado","16:00 — 02:30"],["Domingo","16:00 — 01:00"]];
+
+const hours = [["Lunes — Jueves","17:00 — 01:00"],["Viernes","17:00 — 02:30"],["Sábado","16:00 — 02:30"],["Domingo","16:00 — 01:00"]];
 export default function Home(){
+ const [status, setStatus] = useState<{ open: boolean; text: string } | null>(null);
+ useEffect(() => { const update = () => setStatus(openStatus()); update(); const timer = window.setInterval(update, 60000); return () => window.clearInterval(timer); }, []);
  const [intro,setIntro]=useState(true);
  const [drawer,setDrawer]=useState(false),[chat,setChat]=useState(false),[input,setInput]=useState(""),[busy,setBusy]=useState(false),[msgs,setMsgs]=useState<Msg[]>(welcome);
  useEffect(()=>{const timer=window.setTimeout(()=>setIntro(false),2300);return()=>window.clearTimeout(timer)},[]);
