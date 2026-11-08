@@ -183,3 +183,25 @@
 @media(max-width:900px){.hookah-stage{height:480px}}
 @media(max-width:560px){.hookah-stage{height:440px}}
 @media(prefers-reduced-motion:reduce){.hk-float,.hk-smoke,.hk-ground{animation:none!important}.hk-item{transition-duration:.01s}.hk-item.enter{animation:none}}
+
+
+/* ===== Inicio nuevo Shisha Lux ===== */
+.lux-hero{position:relative;overflow:hidden;isolation:isolate;min-height:780px}
+.lux-hero-bg{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center 40%;opacity:.3;filter:saturate(.75) blur(1px);transform:scale(1.04)}
+.lux-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(55% 65% at 74% 46%,rgba(237,85,197,.2),transparent 70%),radial-gradient(40% 50% at 16% 18%,rgba(77,228,238,.1),transparent 70%),linear-gradient(180deg,rgba(8,9,13,.55) 0%,rgba(8,9,13,.82) 70%,#08090d 100%)}
+.lux-hero-inner{max-width:1380px;margin:auto;padding:76px 40px 28px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+.lux-copy{min-width:0}.lux-copy h1{font-size:clamp(3.1rem,6.2vw,6.1rem);line-height:.96;margin:18px 0 22px}.lux-copy .lead{max-width:540px}
+.lux-badges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.lux-badge{display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border:1px solid var(--line);border-radius:999px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,.045);backdrop-filter:blur(10px)}
+.lux-dot{width:8px;height:8px;border-radius:50%;background:#7a7d89;display:inline-block}
+.lux-open{color:#d7fbe6}.lux-open .lux-dot{background:#3be28a;box-shadow:0 0 0 4px rgba(59,226,138,.18);animation:luxPulse 2.2s ease-in-out infinite}
+@keyframes luxPulse{50%{box-shadow:0 0 0 8px rgba(59,226,138,0)}}
+.lux-facts{list-style:none;display:flex;gap:34px;margin:42px 0 0;padding:26px 0 0;border-top:1px solid var(--line)}
+.lux-facts li{display:flex;align-items:center;gap:13px}.lux-facts b{font-size:2.5rem;font-weight:300;line-height:1;color:var(--text)}
+.lux-facts span{font-size:11px;line-height:1.5;letter-spacing:.08em;color:var(--muted)}
+.lux-strip{max-width:1380px;margin:0 auto;padding:12px 40px 54px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.lux-strip a{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:150px;padding:18px 20px;border:1px solid var(--line);border-radius:6px;overflow:hidden;background-size:cover;background-position:center;color:var(--text);text-decoration:none;transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .4s}
+.lux-strip a:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,9,13,.92),rgba(8,9,13,.35) 70%);transition:background .4s}
+.lux-strip a:hover{transform:translateY(-4px);border-color:rgba(237,85,197,.5)}.lux-strip a>*{position:relative}
+.lux-strip small{font-size:10px;letter-spacing:.2em;color:var(--cyan)}.lux-strip b{font-size:1.25rem;font-weight:500;margin:4px 0 2px}.lux-strip span{font-size:11px;letter-spacing:.1em;color:var(--muted)}
+@media(max-width:900px){.lux-hero{min-height:0}.lux-hero-inner{grid-template-columns:1fr;padding:48px 22px 12px;gap:8px}.lux-facts{gap:20px;flex-wrap:wrap}.hookah-stage{order:-1}.lux-strip{grid-template-columns:1fr;padding:6px 22px 40px}.lux-strip a{min-height:96px}}
