@@ -2,9 +2,9 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 type Item = { src: string; name: string; glow: string; alt: string };
 const items: Item[] = [
- { src: "/cachimbas/cachimba-1.webp", name: "SELECCIÓN 01", glow: "#4de4ee", alt: "Cachimba con base azul y manguera turquesa" },
- { src: "/cachimbas/cachimba-2.webp", name: "SELECCIÓN 02", glow: "#6f9bff", alt: "Cachimba con base de cristal tallado y manguera azul" },
- { src: "/cachimbas/cachimba-3.webp", name: "SELECCIÓN 03", glow: "#ed55c5", alt: "Cachimba negra con base de cristal ahumado" },
+ { src: "/cachimbas/cachimba-1.svg", name: "SELECCIÓN 01", glow: "#4de4ee", alt: "Cachimba con base azul y manguera turquesa" },
+ { src: "/cachimbas/cachimba-2.svg", name: "SELECCIÓN 02", glow: "#6f9bff", alt: "Cachimba con base de cristal tallado y manguera azul" },
+ { src: "/cachimbas/cachimba-3.svg", name: "SELECCIÓN 03", glow: "#ed55c5", alt: "Cachimba negra con base de cristal ahumado" },
 ];
 export default function HookahShowcase() {
  const n=items.length;
